@@ -1,5 +1,6 @@
 # Paket manager
 .paket/paket.exe
+paket.lock
 
 # NuGet Packages Directory
 packages/
