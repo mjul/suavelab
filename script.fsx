@@ -1,3 +1,9 @@
+(*
+   This example shows how to use the Suave framework
+   and the Chiron JSON-library for building web services on Mac in .NET and F#.
+   
+   *)
+
 #I "./packages/Suave/lib/net40"
 #I "./packages/Chiron/lib/net40"
 #I "./packages/Aether/lib/net35"
@@ -19,6 +25,8 @@ open Suave.SuaveConfig
 open Suave.WebPart
 open Chiron
 
+
+// Define the internal data model: investment funds in categories
 type Category = {Id: int; Name: string}
 type InvestmentFund = { Id: int; Name: string; AnnualCostInPercent: decimal; Isin: string; IsRestricted: bool; Category: Category}
 
@@ -81,9 +89,13 @@ let products () =
 let jsonResponse dto =
     OK(Json.format dto)
     >=> Suave.Writers.setMimeType "application/json; charset=utf-8"
+    // Add cross-origin resource sharing header
+    // (this will be provided by Suave in the next version)
     >=> Suave.Writers.addHeader "Access-Control-Allow-Origin" "*"
 
 
+// Define a small web server with a number of paths
+// Static content, dynamic typed routes and also JSON datagg
 let app : WebPart =
     choose
         [Filters.GET >=> choose [
@@ -93,6 +105,6 @@ let app : WebPart =
             pathScan "/static/%s" (fun (fname) -> sendFile (sprintf "./static/%s" fname) true)]]
 
 
-
+// Run the web server on the default port (http://localhost:8083)
 startWebServer defaultConfig app
 
