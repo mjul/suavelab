@@ -1,0 +1,7 @@
+# Paket manager
+.paket/paket.exe
+
+# NuGet Packages Directory
+packages/
+
+.DS_Store
